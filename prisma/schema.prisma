@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  articles articles[]
+
+  @@index([name], name: "category_name")
+}
+
+model roles {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  users      users[]
+  created_at DateTime @default(now())
+
+  @@index([name], name: "role_name")
+}
+
+model users {
+  id           Int           @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  username     String
+  email        String        @unique
+  password     String
+  role         roles         @relation(fields: [role_id], references: [id])
+  role_id      Int
+  comments     comments[]
+  articles     user_author[]
+  avatar_image String
+  created_at   DateTime      @default(now())
+
+  @@index([username], name: "username")
+}
+
+model articles {
+  id             Int           @id @default(autoincrement())
+  title          String
+  description    String
+  content        String
+  image          String
+  category       categories    @relation(fields: [category_id], references: [id])
+  category_id    Int
+  comments       comments[]
+  statistics     statistics[]
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+  user_authors   user_author[]
+  approval_state String        @default("pending")
+  slug           String        @unique
+
+  @@index([title], name: "title")
+}
+
+model comments {
+  id         Int      @id @default(autoincrement())
+  content    String
+  article    articles @relation(fields: [article_id], references: [id])
+  article_id Int
+  user       users    @relation(fields: [user_id], references: [id])
+  user_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([content], name: "content")
+}
+
+model statistics {
+  id         Int      @id @default(autoincrement())
+  article    articles @relation(fields: [article_id], references: [id])
+  article_id Int
+  views      Int      @default(0)
+  likes      Int      @default(0)
+  dislikes   Int      @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([views], name: "views")
+  @@index([likes], name: "likes")
+  @@index([dislikes], name: "dislikes")
+}
+
+model user_author {
+  article    articles @relation(fields: [article_id], references: [id])
+  article_id Int
+  user       users    @relation(fields: [user_id], references: [id])
+  user_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([article_id, user_id])
+  @@index([article_id], name: "article_id")
+  @@index([user_id], name: "user_id")
+}
