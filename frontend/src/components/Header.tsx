@@ -47,14 +47,14 @@ export const Header = () => {
   ];
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto pb-5">
       <div className="flex flex-col w-full justify-between items-center overflow-y-scroll">
         <div className="flex flex-row w-full justify-between items-center pb-2">
           <Link to="/">
             <img
               src="https://cdn.worldvectorlogo.com/logos/news-pro.svg"
               alt="News Pro"
-              className="w-[24px] h-[24px]"
+              className="w-[24px] h-full"
             />
           </Link>
           {news_categories.map((link: any, index: number) => (
