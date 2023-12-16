@@ -2,8 +2,12 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { NotFound } from './components/NotFound';
 import { DashboardLayout } from './layouts/DashboardLayout';
+import { AdminLayout } from './layouts/AdminLayout';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { SingleArticle } from './components/Article';
+import { ArticlesPanel } from './pages/Admins/Articles/ArticlesPanel';
+import { UsersPanel } from './pages/Admins/Users/UsersPanel';
+import { UserProfile } from './pages/Admins/User/UserProfile';
 
 function App() {
   const news_categories = [
@@ -61,6 +65,11 @@ function App() {
               element={<Dashboard />}
             />
           ))}
+        </Route>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="articles" element={<ArticlesPanel />} />
+          <Route path="users" element={<UsersPanel />} />
+          <Route path="users/:id" element={<UserProfile />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
