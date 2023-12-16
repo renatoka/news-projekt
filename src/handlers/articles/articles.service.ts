@@ -4,6 +4,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import slugify from 'slugify';
+import { ArticlesQuery } from './dto/query.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -24,9 +25,12 @@ export class ArticlesService {
     });
   }
 
-  async findAll(category: string) {
+  async findAll(query: ArticlesQuery) {
+    const { title, category, approval_state } = query;
     const where: Prisma.articlesWhereInput = {
       ...(category ? { category: { name: category } } : {}),
+      ...(approval_state == 'all' ? {} : { approval_state }),
+      ...(title ? { title: { contains: title } } : {}),
     };
     const count = await this.prisma.articles.count({
       where,
@@ -48,6 +52,14 @@ export class ArticlesService {
           },
         },
       },
+      orderBy: [
+        {
+          created_at: 'desc',
+        },
+        {
+          updated_at: 'desc',
+        },
+      ],
     });
     return {
       count,
@@ -78,7 +90,8 @@ export class ArticlesService {
   }
 
   async update(id: number, dto: UpdateArticleDto) {
-    const { title, description, content, image, category_id } = dto;
+    const { title, description, content, image, category_id, approval_state } =
+      dto;
     return await this.prisma.articles.update({
       where: {
         id,
@@ -89,6 +102,7 @@ export class ArticlesService {
         content,
         image,
         category_id,
+        approval_state,
       },
     });
   }

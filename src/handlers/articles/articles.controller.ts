@@ -11,7 +11,7 @@ import {
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-
+import { ArticlesQuery } from './dto/query.dto';
 @Controller('api/articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
@@ -22,8 +22,8 @@ export class ArticlesController {
   }
 
   @Get()
-  findAll(@Query('category') category: string) {
-    return this.articlesService.findAll(category);
+  findAll(@Query() query: ArticlesQuery) {
+    return this.articlesService.findAll(query);
   }
 
   @Get(':id')

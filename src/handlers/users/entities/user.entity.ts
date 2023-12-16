@@ -1,9 +1,10 @@
+import { user_author } from '@prisma/client';
 import { Article } from '../../articles/entities/article.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Role } from '../../roles/entities/role.entity';
 
 export class User {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   username: string;
@@ -12,12 +13,18 @@ export class User {
   role: Role;
   role_id: number;
   comments: Comment[];
-  articles: Article[];
+  user_authors: {
+    article_id: string;
+    user_id: string;
+    created_at: Date;
+    updated_at: Date;
+    article: Article;
+  }[];
   avatar_image: string;
-  createdAt: Date;
+  created_at: Date;
 
   constructor(
-    id: number,
+    id: string,
     first_name: string,
     last_name: string,
     username: string,
@@ -26,9 +33,15 @@ export class User {
     role: Role,
     role_id: number,
     comments: Comment[],
-    articles: Article[],
+    user_authors: {
+      article_id: string;
+      user_id: string;
+      created_at: Date;
+      updated_at: Date;
+      article: Article;
+    }[],
     avatar_image: string,
-    createdAt: Date,
+    created_at: Date,
   ) {
     this.id = id;
     this.first_name = first_name;
@@ -39,8 +52,8 @@ export class User {
     this.role = role;
     this.role_id = role_id;
     this.comments = comments;
-    this.articles = articles;
+    this.user_authors = user_authors;
     this.avatar_image = avatar_image;
-    this.createdAt = createdAt;
+    this.created_at = created_at;
   }
 }
