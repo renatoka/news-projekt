@@ -6,16 +6,27 @@ import {
   GET_ARTICLE_FAILURE,
   GET_ARTICLE_REQUEST,
   GET_ARTICLE_SUCCESS,
+  REVIEW_ARTICLE_REQUEST,
+  REVIEW_ARTICLE_FAILURE,
+  REVIEW_ARTICLE_SUCCESS,
 } from '../constants/articles.constants';
 import { Dispatch } from '@reduxjs/toolkit';
 
 export const getArticles =
-  ({ category }: { category?: string }) =>
+  ({
+    category,
+    title,
+    approval_state,
+  }: {
+    category?: string;
+    title?: string;
+    approval_state?: 'approved' | 'pending' | 'rejected' | 'all';
+  }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch({ type: GET_ARTICLES_REQUEST });
       const res = await axios.get('/api/articles', {
-        params: { category },
+        params: { category, title, approval_state },
       });
       const data = await res.data;
       dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
@@ -34,3 +45,16 @@ export const getArticle = (id: number) => async (dispatch: Dispatch) => {
     dispatch({ type: GET_ARTICLE_FAILURE, payload: error });
   }
 };
+
+export const reviewArticle =
+  (id: number, approval_state: 'approved' | 'rejected') =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: REVIEW_ARTICLE_REQUEST });
+      const res = await axios.patch(`/api/articles/${id}`, { approval_state });
+      const data = await res.data;
+      dispatch({ type: REVIEW_ARTICLE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: REVIEW_ARTICLE_FAILURE, payload: error });
+    }
+  };
