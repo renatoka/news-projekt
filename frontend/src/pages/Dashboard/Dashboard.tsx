@@ -14,11 +14,16 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (location.pathname == '/') {
-      dispatch(getArticles({}));
+      dispatch(getArticles({ approval_state: 'approved' }));
     } else {
-      dispatch(getArticles({ category: location.pathname.replace('/', '') }));
+      dispatch(
+        getArticles({
+          category: location.pathname.replace('/', ''),
+          approval_state: 'approved',
+        }),
+      );
     }
-  }, [location]);
+  }, [location, dispatch]);
 
   useEffect(() => {
     if (articles) {
