@@ -25,6 +25,78 @@ async function seed() {
     prisma.roles.create({ data: { name: 'User' } }),
   ]);
 
+  const [UserOne, UserTwo] = await Promise.all([
+    prisma.users.create({
+      data: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: await bcrypt.hash(password, 10),
+        role_id: User.id,
+        avatar_image: faker.image.avatarLegacy(),
+      },
+    }),
+    prisma.users.create({
+      data: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: await bcrypt.hash(password, 10),
+        role_id: User.id,
+        avatar_image: faker.image.avatar(),
+      },
+    }),
+    prisma.users.create({
+      data: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: await bcrypt.hash(password, 10),
+        role_id: User.id,
+        avatar_image: faker.image.avatarLegacy(),
+      },
+    }),
+  ]);
+
+  const [EditorOne, EditorTwo, EditorThree] = await Promise.all([
+    prisma.users.create({
+      data: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: await bcrypt.hash(password, 10),
+        role_id: Editor.id,
+        avatar_image: faker.image.avatarLegacy(),
+      },
+    }),
+    prisma.users.create({
+      data: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: await bcrypt.hash(password, 10),
+        role_id: Editor.id,
+        avatar_image: faker.image.avatarLegacy(),
+      },
+    }),
+    prisma.users.create({
+      data: {
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: await bcrypt.hash(password, 10),
+        role_id: Editor.id,
+        avatar_image: faker.image.avatarLegacy(),
+      },
+    }),
+  ]);
+
   const admin = await prisma.users.create({
     data: {
       first_name: faker.person.firstName(),
@@ -33,30 +105,6 @@ async function seed() {
       email: 'admin@example.com',
       password: await bcrypt.hash(password, 10),
       role_id: Admin.id,
-      avatar_image: faker.image.avatarLegacy(),
-    },
-  });
-
-  const editor = await prisma.users.create({
-    data: {
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      username: 'editor',
-      email: 'editor@example.com',
-      password: await bcrypt.hash(password, 10),
-      role_id: Editor.id,
-      avatar_image: faker.image.avatarLegacy(),
-    },
-  });
-
-  const user = await prisma.users.create({
-    data: {
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      username: 'user',
-      email: 'user@example.com',
-      password: await bcrypt.hash(password, 10),
-      role_id: User.id,
       avatar_image: faker.image.avatarLegacy(),
     },
   });
@@ -82,14 +130,14 @@ async function seed() {
         created_at: faker.date.past(),
         user_authors: {
           create: {
-            user_id: Editor.id,
+            user_id: Math.random() > 0.5 ? EditorOne.id : EditorTwo.id,
           },
         },
         comments: {
           createMany: {
             data: Array.from({ length: 5 }, () => ({
               content: faker.lorem.paragraph(),
-              user_id: user.id,
+              user_id: Math.random() > 0.5 ? UserOne.id : UserTwo.id,
               created_at: faker.date.past(),
             })),
           },

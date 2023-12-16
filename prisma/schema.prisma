@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,33 +12,34 @@ model categories {
   name     String     @unique
   articles articles[]
 
-  @@index([name], name: "category_name")
+  @@index([name], map: "category_name")
 }
 
 model roles {
   id         Int      @id @default(autoincrement())
   name       String   @unique
-  users      users[]
   created_at DateTime @default(now())
+  users      users[]
 
-  @@index([name], name: "role_name")
+  @@index([name], map: "role_name")
 }
 
 model users {
-  id           Int           @id @default(autoincrement())
+  id           String        @id @default(cuid())
   first_name   String
   last_name    String
   username     String
   email        String        @unique
   password     String
-  role         roles         @relation(fields: [role_id], references: [id])
   role_id      Int
-  comments     comments[]
-  articles     user_author[]
-  avatar_image String
   created_at   DateTime      @default(now())
+  avatar_image String
+  comments     comments[]
+  articles     articles[]
+  role         roles         @relation(fields: [role_id], references: [id])
+  user_authors user_author[]
 
-  @@index([username], name: "username")
+  @@index([username], map: "username")
 }
 
 model articles {
@@ -50,56 +48,57 @@ model articles {
   description    String
   content        String
   image          String
-  category       categories    @relation(fields: [category_id], references: [id])
   category_id    Int
-  comments       comments[]
-  statistics     statistics[]
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
-  user_authors   user_author[]
   approval_state String        @default("pending")
   slug           String        @unique
+  category       categories    @relation(fields: [category_id], references: [id])
+  comments       comments[]
+  statistics     statistics[]
+  user_authors   user_author[]
+  users          users[]
 
-  @@index([title], name: "title")
+  @@index([title], map: "title")
 }
 
 model comments {
   id         Int      @id @default(autoincrement())
   content    String
-  article    articles @relation(fields: [article_id], references: [id])
   article_id Int
-  user       users    @relation(fields: [user_id], references: [id])
-  user_id    Int
+  user_id    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  article    articles @relation(fields: [article_id], references: [id])
+  user       users    @relation(fields: [user_id], references: [id])
 
-  @@index([content], name: "content")
+  @@index([content], map: "content")
 }
 
 model statistics {
   id         Int      @id @default(autoincrement())
-  article    articles @relation(fields: [article_id], references: [id])
   article_id Int
   views      Int      @default(0)
   likes      Int      @default(0)
   dislikes   Int      @default(0)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  article    articles @relation(fields: [article_id], references: [id])
 
-  @@index([views], name: "views")
-  @@index([likes], name: "likes")
-  @@index([dislikes], name: "dislikes")
+  @@index([views], map: "views")
+  @@index([likes], map: "likes")
+  @@index([dislikes], map: "dislikes")
 }
 
 model user_author {
-  article    articles @relation(fields: [article_id], references: [id])
   article_id Int
-  user       users    @relation(fields: [user_id], references: [id])
-  user_id    Int
+  user_id    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  article    articles @relation(fields: [article_id], references: [id])
+  user       users    @relation(fields: [user_id], references: [id])
 
   @@id([article_id, user_id])
-  @@index([article_id], name: "article_id")
-  @@index([user_id], name: "user_id")
+  @@index([article_id], map: "article_id")
+  @@index([user_id], map: "user_id")
 }
