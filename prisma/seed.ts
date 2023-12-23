@@ -117,7 +117,7 @@ async function seed() {
     });
   }
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     await prisma.articles.create({
       data: {
         title: faker.lorem.sentence(),
@@ -136,7 +136,7 @@ async function seed() {
         comments: {
           createMany: {
             data: Array.from({ length: 5 }, () => ({
-              content: faker.lorem.paragraph(),
+              content: faker.lorem.sentence(),
               user_id: Math.random() > 0.5 ? UserOne.id : UserTwo.id,
               created_at: faker.date.past(),
             })),
