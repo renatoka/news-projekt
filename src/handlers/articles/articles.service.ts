@@ -26,7 +26,7 @@ export class ArticlesService {
   }
 
   async findAll(query: ArticlesQuery) {
-    const { title, category, approval_state } = query;
+    const { title, category, approval_state, page, limit } = query;
     const where: Prisma.articlesWhereInput = {
       ...(category ? { category: { name: category } } : {}),
       ...(approval_state == 'all' ? {} : { approval_state }),
@@ -36,6 +36,8 @@ export class ArticlesService {
       where,
     });
     const articles = await this.prisma.articles.findMany({
+      take: Number(limit),
+      skip: (Number(page) - 1) * Number(limit),
       where,
       include: {
         category: true,
