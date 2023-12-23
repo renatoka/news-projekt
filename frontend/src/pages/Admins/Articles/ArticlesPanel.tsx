@@ -14,11 +14,18 @@ export const ArticlesPanel = () => {
   const [news_articles, setNewsArticles] = useState<Article[]>([]);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [count, setCount] = useState<number>(0);
+  const [query, setQuery] = useState<any>({
+    page: 1,
+    limit: 10,
+    sort: 'id',
+    order: 'DESC',
+    approval_state: 'all',
+  });
   const { articles } = useAppSelector((state) => state.articles);
 
   useEffect(() => {
     if (firstLoad) {
-      dispatch(getArticles({ approval_state: 'all' }));
+      dispatch(getArticles(query));
       setFirstLoad(false);
     }
   }, [dispatch]);
@@ -52,7 +59,7 @@ export const ArticlesPanel = () => {
                 color="primary"
                 onClick={() => {
                   dispatch(reviewArticle(article.id, 'approved')).then(() => {
-                    dispatch(getArticles({ approval_state: 'all' }));
+                    dispatch(getArticles(query));
                   });
                 }}
               >
@@ -64,7 +71,7 @@ export const ArticlesPanel = () => {
                 color="danger"
                 onClick={() => {
                   dispatch(reviewArticle(article.id, 'rejected')).then(() => {
-                    dispatch(getArticles({ approval_state: 'all' }));
+                    dispatch(getArticles(query));
                   });
                 }}
               >
@@ -81,7 +88,7 @@ export const ArticlesPanel = () => {
             color="danger"
             onClick={() => {
               dispatch(reviewArticle(article.id, 'rejected')).then(() => {
-                dispatch(getArticles({ approval_state: 'all' }));
+                dispatch(getArticles(query));
               });
             }}
           >
@@ -96,7 +103,7 @@ export const ArticlesPanel = () => {
             color="primary"
             onClick={() => {
               dispatch(reviewArticle(article.id, 'approved')).then(() => {
-                dispatch(getArticles({ approval_state: 'all' }));
+                dispatch(getArticles(query));
               });
             }}
           >
@@ -117,6 +124,30 @@ export const ArticlesPanel = () => {
         pageSizeOptions={[10, 20, 50]}
         paginationMode="server"
         pagination
+        paginationModel={{
+          page: query.page - 1,
+          pageSize: query.limit,
+        }}
+        onSortModelChange={(model) => {
+          setQuery({ ...query, sort: model[0].field, order: model[0].sort });
+          dispatch(
+            getArticles({
+              ...query,
+              sort: model[0].field,
+              order: model[0].sort,
+            }),
+          );
+        }}
+        onPaginationModelChange={(model) => {
+          setQuery({ ...query, page: model.page + 1, limit: model.pageSize });
+          dispatch(
+            getArticles({
+              ...query,
+              page: model.page + 1,
+              limit: model.pageSize,
+            }),
+          );
+        }}
         checkboxSelection
         disableRowSelectionOnClick
       />

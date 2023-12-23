@@ -6,6 +6,7 @@ import {
   getOneUser,
   updateOneUser,
 } from './reducers/users.reducer';
+import { getAllComments } from './reducers/comments.reducer';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     users: getAllUsers.reducer,
     user: getOneUser.reducer,
     updateOneUser: updateOneUser.reducer,
+    comments: getAllComments.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

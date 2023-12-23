@@ -17,16 +17,20 @@ export const getArticles =
     category,
     title,
     approval_state,
+    page,
+    limit,
   }: {
     category?: string;
     title?: string;
     approval_state?: 'approved' | 'pending' | 'rejected' | 'all';
+    page?: number;
+    limit?: number;
   }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch({ type: GET_ARTICLES_REQUEST });
       const res = await axios.get('/api/articles', {
-        params: { category, title, approval_state },
+        params: { category, title, approval_state, page, limit },
       });
       const data = await res.data;
       dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
