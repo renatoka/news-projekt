@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 declare module 'redux' {
   interface Action {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload?: any;
   }
 }

@@ -1,5 +1,8 @@
 import axios from 'axios';
 import {
+  GET_ARTICLES_ADMIN_REQUEST,
+  GET_ARTICLES_ADMIN_SUCCESS,
+  GET_ARTICLES_ADMIN_FAILURE,
   GET_ARTICLES_SUCCESS,
   GET_ARTICLES_FAILURE,
   GET_ARTICLES_REQUEST,
@@ -36,6 +39,33 @@ export const getArticles =
       dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: GET_ARTICLES_FAILURE, payload: error });
+    }
+  };
+
+export const getArticlesAdmin =
+  ({
+    category,
+    title,
+    approval_state,
+    page,
+    limit,
+  }: {
+    category?: string;
+    title?: string;
+    approval_state?: 'approved' | 'pending' | 'rejected' | 'all';
+    page?: number;
+    limit?: number;
+  }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: GET_ARTICLES_ADMIN_REQUEST });
+      const res = await axios.get('/api/articles/admin-panel', {
+        params: { category, title, approval_state, page, limit },
+      });
+      const data = await res.data;
+      dispatch({ type: GET_ARTICLES_ADMIN_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_ARTICLES_ADMIN_FAILURE, payload: error });
     }
   };
 

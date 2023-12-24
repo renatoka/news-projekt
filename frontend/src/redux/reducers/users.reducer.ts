@@ -3,6 +3,7 @@ import { User } from '../../../../src/handlers/users/entities/user.entity';
 
 declare module 'redux' {
   interface Action {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload?: any;
   }
 }

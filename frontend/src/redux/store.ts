@@ -1,22 +1,29 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { categoriesReducer } from './reducers/categories.actions';
-import { getAllArticles, getOneArticle } from './reducers/articles.reducer';
+import {
+  getAllArticles,
+  getAllArticlesAdmin,
+  getOneArticle,
+} from './reducers/articles.reducer';
 import {
   getAllUsers,
   getOneUser,
   updateOneUser,
 } from './reducers/users.reducer';
 import { getAllComments } from './reducers/comments.reducer';
+import { registerUser } from './reducers/auth.reducer';
 
 export const store = configureStore({
   reducer: {
     articles: getAllArticles.reducer,
+    articlesAdmin: getAllArticlesAdmin.reducer,
     article: getOneArticle.reducer,
     categories: categoriesReducer,
     users: getAllUsers.reducer,
     user: getOneUser.reducer,
     updateOneUser: updateOneUser.reducer,
     comments: getAllComments.reducer,
+    register: registerUser.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
