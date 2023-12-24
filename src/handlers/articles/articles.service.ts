@@ -26,6 +26,48 @@ export class ArticlesService {
   }
 
   async findAll(query: ArticlesQuery) {
+    const { title, category, approval_state } = query;
+    const where: Prisma.articlesWhereInput = {
+      ...(category ? { category: { name: category } } : {}),
+      ...(approval_state == 'all' ? {} : { approval_state }),
+      ...(title ? { title: { contains: title } } : {}),
+    };
+    const count = await this.prisma.articles.count({
+      where,
+    });
+    const articles = await this.prisma.articles.findMany({
+      where,
+      include: {
+        category: true,
+        comments: true,
+        statistics: true,
+        user_authors: {
+          select: {
+            user: {
+              select: {
+                first_name: true,
+                last_name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: [
+        {
+          created_at: 'desc',
+        },
+        {
+          updated_at: 'desc',
+        },
+      ],
+    });
+    return {
+      count,
+      articles,
+    };
+  }
+
+  async findAllAdmin(query: ArticlesQuery) {
     const { title, category, approval_state, page, limit } = query;
     const where: Prisma.articlesWhereInput = {
       ...(category ? { category: { name: category } } : {}),

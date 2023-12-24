@@ -26,6 +26,11 @@ export class ArticlesController {
     return this.articlesService.findAll(query);
   }
 
+  @Get('admin-panel')
+  findAllAdmin(@Query() query: ArticlesQuery) {
+    return this.articlesService.findAllAdmin(query);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.articlesService.findOne(+id);

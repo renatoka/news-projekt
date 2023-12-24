@@ -12,9 +12,23 @@ import { RolesService } from './handlers/roles/roles.service';
 import { StatisticsService } from './handlers/statistics/statistics.service';
 import { UsersService } from './handlers/users/users.service';
 import { PrismaService } from './prisma/prisma.service';
+import { AuthModule } from './handlers/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [],
+  imports: [
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+      global: true,
+    }),
+  ],
   controllers: [
     ArticlesController,
     CategoriesController,
