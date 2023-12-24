@@ -17,7 +17,7 @@ export const SingleArticle = () => {
     if (id) {
       dispatch(getArticle(+id));
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (article) {

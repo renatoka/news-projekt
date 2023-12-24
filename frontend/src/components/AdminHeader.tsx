@@ -33,7 +33,7 @@ export const AdminHeader = () => {
               className="w-[24px] h-[24px]"
             />
           </Link>
-          <div className="flex gap-5  ">
+          <div className="flex gap-5">
             {news_categories.map((link: any, index: number) => (
               <Link
                 to={`/admin/${link.path}`}
