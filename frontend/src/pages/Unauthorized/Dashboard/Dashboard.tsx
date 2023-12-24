@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { getArticles } from '../../redux/actions/articles.actions';
-import { Article } from '../../../../src/handlers/articles/entities/article.entity';
-import { ArticlePreview } from '../../components/ArticlePreview';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { getArticles } from '../../../redux/actions/articles.actions';
+import { Article } from '../../../../../src/handlers/articles/entities/article.entity';
+import { ArticlePreview } from '../../../components/ArticlePreview';
 import { useLocation } from 'react-router-dom';
 
 export const Dashboard = () => {
@@ -13,15 +13,20 @@ export const Dashboard = () => {
   const { articles } = useAppSelector((state) => state.articles);
 
   useEffect(() => {
-    if (location.pathname == '/') {
-      dispatch(getArticles({ approval_state: 'approved' }));
-    } else {
-      dispatch(
-        getArticles({
-          category: location.pathname.replace('/', ''),
-          approval_state: 'approved',
-        }),
-      );
+    switch (location.pathname) {
+      case '/':
+        dispatch(getArticles({ approval_state: 'approved' }));
+        break;
+      case /\w+/.test(location.pathname) ? location.pathname : '':
+        dispatch(
+          getArticles({
+            category: location.pathname.replace('/', ''),
+            approval_state: 'approved',
+          }),
+        );
+        break;
+      default:
+        break;
     }
   }, [location, dispatch]);
 
