@@ -20,9 +20,9 @@ async function seed() {
   ];
 
   const [Admin, Editor, User] = await Promise.all([
-    prisma.roles.create({ data: { name: 'Admin' } }),
-    prisma.roles.create({ data: { name: 'Editor' } }),
-    prisma.roles.create({ data: { name: 'User' } }),
+    prisma.roles.create({ data: { name: 'admin' } }),
+    prisma.roles.create({ data: { name: 'editor' } }),
+    prisma.roles.create({ data: { name: 'user' } }),
   ]);
 
   const [UserOne, UserTwo] = await Promise.all([
@@ -34,7 +34,7 @@ async function seed() {
         email: faker.internet.email(),
         password: await bcrypt.hash(password, 10),
         role_id: User.id,
-        avatar_image: faker.image.avatarLegacy(),
+        avatar_image: faker.image.avatar(),
       },
     }),
     prisma.users.create({
@@ -56,23 +56,12 @@ async function seed() {
         email: faker.internet.email(),
         password: await bcrypt.hash(password, 10),
         role_id: User.id,
-        avatar_image: faker.image.avatarLegacy(),
+        avatar_image: faker.image.avatar(),
       },
     }),
   ]);
 
-  const [EditorOne, EditorTwo, EditorThree] = await Promise.all([
-    prisma.users.create({
-      data: {
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        username: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: await bcrypt.hash(password, 10),
-        role_id: Editor.id,
-        avatar_image: faker.image.avatarLegacy(),
-      },
-    }),
+  const [EditorOne, EditorTwo] = await Promise.all([
     prisma.users.create({
       data: {
         first_name: faker.person.firstName(),
@@ -97,7 +86,7 @@ async function seed() {
     }),
   ]);
 
-  const admin = await prisma.users.create({
+  await prisma.users.create({
     data: {
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
@@ -146,7 +135,7 @@ async function seed() {
           create: {
             likes: faker.number.int({ min: 0, max: 100 }),
             dislikes: faker.number.int({ min: 0, max: 100 }),
-            views: faker.number.int({ min: 0, max: 100 }),
+            views: faker.number.int({ min: 50, max: 1000 }),
           },
         },
       },

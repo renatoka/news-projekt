@@ -28,12 +28,12 @@ model users {
   id           String        @id @default(cuid())
   first_name   String
   last_name    String
-  username     String
+  username     String        @unique
   email        String        @unique
   password     String
   role_id      Int
+  avatar_image String?
   created_at   DateTime      @default(now())
-  avatar_image String
   comments     comments[]
   articles     articles[]
   role         roles         @relation(fields: [role_id], references: [id])
