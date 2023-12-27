@@ -12,43 +12,44 @@ import { CommentsPanel } from './pages/Authorized/Admins/Panels/Comments/Comment
 import { Suspense } from 'react';
 import { Login } from './pages/Auth/Login';
 import { Register } from './pages/Auth/Register';
+import { RoleLayout } from './layouts/RoleLayout';
 
 function App() {
   const news_categories = [
     {
       id: 1,
       name: 'General',
-      path: '/general',
+      path: 'general',
     },
     {
       id: 2,
       name: 'Business',
-      path: '/business',
+      path: 'business',
     },
     {
       id: 3,
       name: 'Technology',
-      path: '/technology',
+      path: 'technology',
     },
     {
       id: 4,
       name: 'Science',
-      path: '/science',
+      path: 'science',
     },
     {
       id: 5,
       name: 'Health',
-      path: '/health',
+      path: 'health',
     },
     {
       id: 6,
       name: 'Politics',
-      path: '/politics',
+      path: 'politics',
     },
     {
       id: 7,
       name: 'Sports',
-      path: '/sports',
+      path: 'sports',
     },
     {
       id: 8,
@@ -61,21 +62,29 @@ function App() {
     <Suspense fallback={<div>Loading...</div>}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<DashboardLayout />}>
-            <Route path="/:category/:slug/:id" element={<SingleArticle />} />
-            {news_categories.map((category) => (
-              <Route
-                key={category.id}
-                path={category.path}
-                element={<Dashboard />}
-              />
-            ))}
+          <Route element={<DashboardLayout />}>
+            <Route element={<RoleLayout authorizedRoles={['user']} />}>
+              {news_categories.map((category) => (
+                <Route
+                  key={category.id}
+                  path={category.path}
+                  element={<Dashboard />}
+                />
+              ))}
+              <Route path="/:category/:slug/:id" element={<SingleArticle />} />
+            </Route>
           </Route>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="articles" element={<ArticlesPanel />} />
-            <Route path="comments" element={<CommentsPanel />} />
-            <Route path="users" element={<UsersPanel />} />
-            <Route path="user/:id" element={<UserProfile />} />
+          <Route element={<AdminLayout />}>
+            <Route element={<RoleLayout authorizedRoles={['admin, editor']} />}>
+              <Route path="articles" element={<ArticlesPanel />} />
+              <Route path="comments" element={<CommentsPanel />} />
+              <Route path="users" element={<UsersPanel />} />
+              <Route path="user/:id" element={<UserProfile />} />
+              <Route
+                path="preview/:category/:slug/:id"
+                element={<SingleArticle />}
+              />
+            </Route>
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
