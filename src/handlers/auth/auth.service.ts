@@ -9,6 +9,7 @@ import { LoginDTO } from './dto/login-auth.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
+    private readonly config: ConfigService,
   ) {}
   async signup(createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
@@ -43,8 +45,15 @@ export class AuthService {
       user: rest,
     };
 
-    return {
-      access_token: await this.jwt.signAsync(payload),
-    };
+    const access_token = this.jwt.sign(payload, {
+      secret: this.config.get('JWT_SECRET'),
+      expiresIn: '1d',
+    });
+
+    return access_token;
+  }
+
+  async getTokenData(token: string) {
+    console.log(token);
   }
 }
