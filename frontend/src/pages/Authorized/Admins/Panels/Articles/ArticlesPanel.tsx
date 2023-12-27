@@ -38,7 +38,7 @@ export const ArticlesPanel = () => {
 
   columns[0].renderCell = (params) => {
     const article = params.row as Article;
-    const articleLink = `/${article.category.name}/${article.slug}/${article.id}`;
+    const articleLink = `/preview/${article.category.name}/${article.slug}/${article.id}`;
     return (
       <Link to={articleLink} className="hover:underline">
         {article.title}

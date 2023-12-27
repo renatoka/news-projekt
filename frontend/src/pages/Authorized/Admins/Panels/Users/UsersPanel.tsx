@@ -32,7 +32,7 @@ export const UsersPanel = () => {
 
   columns[0].renderCell = (params) => {
     const user = params.row as User;
-    const userLink = `/admin/user/${user.id}`;
+    const userLink = `/user/${user.id}`;
     return (
       <Link to={userLink} className="hover:underline hover:underline-offset-2">
         {user.username}

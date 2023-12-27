@@ -54,7 +54,7 @@ export const CommentsPanel = () => {
 
   columns[2].renderCell = (params) => {
     const comment = params.row;
-    const userLink = `/admin/user/${comment.user_id}`;
+    const userLink = `/user/${comment.user_id}`;
     return (
       <Link to={userLink} className="hover:underline hover:underline-offset-2">
         {comment.user.first_name} {comment.user.last_name}

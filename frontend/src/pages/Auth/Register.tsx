@@ -29,7 +29,7 @@ export const Register = () => {
     password: '',
   });
 
-  const { success } = useAppSelector((state) => state.register);
+  const { success, error } = useAppSelector((state) => state.register);
 
   useEffect(() => {
     if (success === true) {
@@ -197,6 +197,13 @@ export const Register = () => {
             )}
           </div>
         </div>
+        {error.message != '' && (
+          <p className="my-2 text-sm text-red-600" id="email-error">
+            {error.message == 'USER_EXISTS'
+              ? 'User already exists'
+              : 'Something went wrong.'}
+          </p>
+        )}
         <div>
           <button
             type="submit"
