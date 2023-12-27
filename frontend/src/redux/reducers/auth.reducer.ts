@@ -13,7 +13,11 @@ const registerUser = createSlice({
   initialState: {
     user: {} as User,
     success: false,
-    error: null,
+    error: {
+      message: '',
+      error: '',
+      statusCode: 0,
+    },
     loading: false,
   },
   reducers: {},
@@ -30,14 +34,99 @@ const registerUser = createSlice({
       builder.addCase('REGISTER_ACCOUNT_FAILURE', (state, action) => {
         state.success = false;
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload.response.data;
       }),
       builder.addCase('REGISTER_ACCOUNT_RESET', (state) => {
         state.success = false;
         state.loading = false;
-        state.error = null;
+        state.error = {
+          message: '',
+          error: '',
+          statusCode: 0,
+        };
       });
   },
 });
 
-export { registerUser };
+const loginAccount = createSlice({
+  name: 'login',
+  initialState: {
+    access_token: '',
+    success: false,
+    error: {
+      message: '',
+      error: '',
+      statusCode: 0,
+    },
+    loading: false,
+  },
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase('LOGIN_ACCOUNT_REQUEST', (state) => {
+      state.success = false;
+      state.loading = true;
+    }),
+      builder.addCase('LOGIN_ACCOUNT_SUCCESS', (state, action) => {
+        state.success = true;
+        state.loading = false;
+        state.access_token = action.payload;
+      }),
+      builder.addCase('LOGIN_ACCOUNT_FAILURE', (state, action) => {
+        state.success = false;
+        state.loading = false;
+        state.error = action.payload.response.data;
+      }),
+      builder.addCase('LOGIN_ACCOUNT_RESET', (state) => {
+        state.success = false;
+        state.loading = false;
+        state.error = {
+          message: '',
+          error: '',
+          statusCode: 0,
+        };
+      });
+  },
+});
+
+const loggedUser = createSlice({
+  name: 'loggedUser',
+  initialState: {
+    user: {} as User,
+    success: false,
+    error: {
+      message: '',
+      error: '',
+      statusCode: 0,
+    },
+    loading: false,
+  },
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase('USER_DATA_REQUEST', (state) => {
+      state.success = false;
+      state.loading = true;
+    }),
+      builder.addCase('USER_DATA_SUCCESS', (state, action) => {
+        state.success = true;
+        state.loading = false;
+        state.user = action.payload;
+      }),
+      builder.addCase('USER_DATA_FAILURE', (state, action) => {
+        state.success = false;
+        state.loading = false;
+        state.error = action.payload.response.data;
+      }),
+      builder.addCase('USER_DATA_RESET', (state) => {
+        state.user = {} as any;
+        state.success = false;
+        state.loading = false;
+        state.error = {
+          message: '',
+          error: '',
+          statusCode: 0,
+        };
+      });
+  },
+});
+
+export { registerUser, loginAccount, loggedUser };

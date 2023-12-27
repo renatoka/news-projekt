@@ -14,6 +14,7 @@ import {
   REVIEW_ARTICLE_SUCCESS,
 } from '../constants/articles.constants';
 import { Dispatch } from '@reduxjs/toolkit';
+import { api } from '../api.service';
 
 export const getArticles =
   ({
@@ -59,7 +60,7 @@ export const getArticlesAdmin =
   async (dispatch: Dispatch) => {
     try {
       dispatch({ type: GET_ARTICLES_ADMIN_REQUEST });
-      const res = await axios.get('/api/articles/admin-panel', {
+      const res = await api.get('/api/articles/admin-panel', {
         params: { category, title, approval_state, page, limit },
       });
       const data = await res.data;
@@ -85,7 +86,7 @@ export const reviewArticle =
   async (dispatch: Dispatch) => {
     try {
       dispatch({ type: REVIEW_ARTICLE_REQUEST });
-      const res = await axios.patch(`/api/articles/${id}`, { approval_state });
+      const res = await api.patch(`/api/articles/${id}`, { approval_state });
       const data = await res.data;
       dispatch({ type: REVIEW_ARTICLE_SUCCESS, payload: data });
     } catch (error) {

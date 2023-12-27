@@ -11,7 +11,11 @@ import {
   updateOneUser,
 } from './reducers/users.reducer';
 import { getAllComments } from './reducers/comments.reducer';
-import { registerUser } from './reducers/auth.reducer';
+import {
+  loggedUser,
+  loginAccount,
+  registerUser,
+} from './reducers/auth.reducer';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +28,8 @@ export const store = configureStore({
     updateOneUser: updateOneUser.reducer,
     comments: getAllComments.reducer,
     register: registerUser.reducer,
+    login: loginAccount.reducer,
+    loggedUser: loggedUser.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

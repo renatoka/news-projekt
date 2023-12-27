@@ -11,11 +11,12 @@ import {
   UPDATE_USER_SUCCESS,
 } from '../constants/users.constants';
 import { Dispatch } from '@reduxjs/toolkit';
+import { api } from '../api.service';
 
 export const getUser = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch({ type: GET_USER_REQUEST });
-    const res = await axios.get(`/api/users/${id}`);
+    const res = await api.get(`/api/users/${id}`);
     const data = await res.data;
     dispatch({ type: GET_USER_SUCCESS, payload: data });
   } catch (error) {
@@ -49,7 +50,7 @@ export const updateUser =
   (id: string, data: any) => async (dispatch: Dispatch) => {
     try {
       dispatch({ type: UPDATE_USER_REQUEST });
-      await axios.patch(`/api/users/${id}`, data);
+      await api.patch(`/api/users/${id}`, data);
       dispatch({ type: UPDATE_USER_SUCCESS });
     } catch (error) {
       dispatch({ type: UPDATE_USER_FAILURE, payload: error });
