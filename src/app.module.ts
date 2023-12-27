@@ -14,19 +14,12 @@ import { UsersService } from './handlers/users/users.service';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './handlers/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-
 @Module({
   imports: [
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-    }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1d' },
-      global: true,
     }),
   ],
   controllers: [
