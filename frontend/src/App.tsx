@@ -13,6 +13,7 @@ import { Suspense } from 'react';
 import { Login } from './pages/Auth/Login';
 import { Register } from './pages/Auth/Register';
 import { RoleLayout } from './layouts/RoleLayout';
+import { ArticleForm } from './pages/Authorized/Admins/Others/ArticleForm.tsx/ArticleForm';
 
 function App() {
   const news_categories = [
@@ -75,8 +76,11 @@ function App() {
             </Route>
           </Route>
           <Route element={<AdminLayout />}>
-            <Route element={<RoleLayout authorizedRoles={['admin, editor']} />}>
+            <Route
+              element={<RoleLayout authorizedRoles={['editor', 'admin']} />}
+            >
               <Route path="articles" element={<ArticlesPanel />} />
+              <Route path="articles/create" element={<ArticleForm />} />
               <Route path="comments" element={<CommentsPanel />} />
               <Route path="users" element={<UsersPanel />} />
               <Route path="user/:id" element={<UserProfile />} />
