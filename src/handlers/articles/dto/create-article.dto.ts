@@ -25,6 +25,10 @@ export class CreateArticleDto {
   @IsNotEmpty()
   approval_state: string;
 
+  @IsString()
+  @IsNotEmpty()
+  user_id: string;
+
   constructor(
     title: string,
     description: string,
@@ -32,6 +36,7 @@ export class CreateArticleDto {
     image: string,
     category_id: number,
     approval_state: string,
+    user_id: string,
   ) {
     this.title = title;
     this.description = description;
@@ -39,5 +44,6 @@ export class CreateArticleDto {
     this.image = image;
     this.category_id = category_id;
     this.approval_state = approval_state;
+    this.user_id = user_id;
   }
 }

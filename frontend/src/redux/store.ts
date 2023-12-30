@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { categoriesReducer } from './reducers/categories.actions';
 import {
+  createArticle,
   getAllArticles,
   getAllArticlesAdmin,
   getOneArticle,
@@ -22,6 +23,7 @@ export const store = configureStore({
     articles: getAllArticles.reducer,
     articlesAdmin: getAllArticlesAdmin.reducer,
     article: getOneArticle.reducer,
+    createArticle: createArticle.reducer,
     categories: categoriesReducer,
     users: getAllUsers.reducer,
     user: getOneUser.reducer,

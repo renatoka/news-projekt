@@ -1,4 +1,3 @@
-import { user_author } from '@prisma/client';
 import { Category } from '../../categories/entities/category.entity';
 import { Statistic } from '../../statistics/entities/statistic.entity';
 
@@ -17,6 +16,7 @@ export class Article {
       user: {
         first_name: string;
         last_name: string;
+        image: string;
       };
     },
   ];
@@ -40,6 +40,7 @@ export class Article {
         user: {
           first_name: string;
           last_name: string;
+          image: string;
         };
       },
     ],

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Category } from '../../../../src/handlers/categories/entities/category.entity';
 
 declare module 'redux' {
   interface Action {
@@ -8,7 +9,7 @@ declare module 'redux' {
 }
 
 const initialState = {
-  categories: { categories: [], count: 0 },
+  categories: { categories: [] as Category[], count: 0 },
   loading: true,
   error: null,
 };

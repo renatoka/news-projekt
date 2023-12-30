@@ -10,8 +10,15 @@ import { ArticlesQuery } from './dto/query.dto';
 export class ArticlesService {
   constructor(private readonly prisma: PrismaService) {}
   async create(dto: CreateArticleDto) {
-    const { title, description, content, image, category_id, approval_state } =
-      dto;
+    const {
+      title,
+      description,
+      content,
+      image,
+      category_id,
+      approval_state,
+      user_id,
+    } = dto;
     return await this.prisma.articles.create({
       data: {
         title,
@@ -21,6 +28,18 @@ export class ArticlesService {
         category_id,
         approval_state,
         slug: slugify(title, { lower: true, strict: true }),
+        user_authors: {
+          create: {
+            user_id: user_id,
+          },
+        },
+        statistics: {
+          create: {
+            likes: 0,
+            dislikes: 0,
+            views: 0,
+          },
+        },
       },
     });
   }

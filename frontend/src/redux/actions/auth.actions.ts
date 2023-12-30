@@ -46,8 +46,8 @@ export const loginAccount =
 
 export const logoutAccount = () => async (dispatch: Dispatch) => {
   try {
+    localStorage.setItem('access_token', '');
     dispatch({ type: USER_DATA_RESET });
-    localStorage.clear();
   } catch (error) {
     console.log(error);
   }

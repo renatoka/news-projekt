@@ -12,6 +12,9 @@ import {
   REVIEW_ARTICLE_REQUEST,
   REVIEW_ARTICLE_FAILURE,
   REVIEW_ARTICLE_SUCCESS,
+  CREATE_ARTICLE_FAILURE,
+  CREATE_ARTICLE_REQUEST,
+  CREATE_ARTICLE_SUCCESS,
 } from '../constants/articles.constants';
 import { Dispatch } from '@reduxjs/toolkit';
 import { api } from '../api.service';
@@ -91,5 +94,40 @@ export const reviewArticle =
       dispatch({ type: REVIEW_ARTICLE_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: REVIEW_ARTICLE_FAILURE, payload: error });
+    }
+  };
+
+export const createArticle =
+  ({
+    title,
+    description,
+    content,
+    image,
+    category_id,
+    user_id,
+  }: {
+    title: string;
+    description: string;
+    content: string;
+    image: string;
+    category_id: string;
+    user_id: string;
+  }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: CREATE_ARTICLE_REQUEST });
+      const res = await api.post('/api/articles', {
+        title,
+        description,
+        content,
+        image,
+        category_id,
+        approval_state: 'pending',
+        user_id,
+      });
+      const data = await res.data;
+      dispatch({ type: CREATE_ARTICLE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: CREATE_ARTICLE_FAILURE, payload: error });
     }
   };

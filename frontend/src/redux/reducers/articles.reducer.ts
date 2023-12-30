@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Article } from '../../../../src/handlers/articles/entities/article.entity';
 
 declare module 'redux' {
   interface Action {
@@ -11,7 +12,7 @@ const getAllArticles = createSlice({
   name: 'articles',
   initialState: {
     articles: { articles: [], count: 0 },
-    loading: true,
+    loading: false,
     error: null,
   },
   reducers: {},
@@ -34,7 +35,7 @@ const getAllArticlesAdmin = createSlice({
   name: 'articlesAdmin',
   initialState: {
     articles: { articles: [], count: 0 },
-    loading: true,
+    loading: false,
     error: null,
   },
   reducers: {},
@@ -57,7 +58,7 @@ const getOneArticle = createSlice({
   name: 'article',
   initialState: {
     article: {},
-    loading: true,
+    loading: false,
     error: null,
   },
   reducers: {},
@@ -80,7 +81,7 @@ const reviewArticle = createSlice({
   name: 'review',
   initialState: {
     articles: { articles: [], count: 0 },
-    loading: true,
+    loading: false,
     error: null,
   },
   reducers: {},
@@ -99,4 +100,42 @@ const reviewArticle = createSlice({
   },
 });
 
-export { getAllArticles, getOneArticle, reviewArticle, getAllArticlesAdmin };
+const createArticle = createSlice({
+  name: 'createArticle',
+  initialState: {
+    article: {} as Article,
+    loading: false,
+    error: null,
+    success: false,
+  },
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase('CREATE_ARTICLE_REQUEST', (state) => {
+      state.loading = true;
+    }),
+      builder.addCase('CREATE_ARTICLE_SUCCESS', (state, action) => {
+        state.loading = false;
+        state.article = action.payload;
+        state.success = true;
+      }),
+      builder.addCase('CREATE_ARTICLE_FAILURE', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+      }),
+      builder.addCase('CREATE_ARTICLE_RESET', (state) => {
+        state.article = {} as any;
+        state.loading = false;
+        state.error = null;
+        state.success = false;
+      });
+  },
+});
+
+export {
+  getAllArticles,
+  getOneArticle,
+  reviewArticle,
+  getAllArticlesAdmin,
+  createArticle,
+};

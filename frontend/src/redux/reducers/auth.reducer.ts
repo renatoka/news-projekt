@@ -8,6 +8,10 @@ declare module 'redux' {
   }
 }
 
+interface UserExtended extends User {
+  role_name: string;
+}
+
 const registerUser = createSlice({
   name: 'register',
   initialState: {
@@ -77,6 +81,7 @@ const loginAccount = createSlice({
         state.error = action.payload.response.data;
       }),
       builder.addCase('LOGIN_ACCOUNT_RESET', (state) => {
+        state.access_token = '';
         state.success = false;
         state.loading = false;
         state.error = {
@@ -91,7 +96,7 @@ const loginAccount = createSlice({
 const loggedUser = createSlice({
   name: 'loggedUser',
   initialState: {
-    user: {} as User,
+    user: {} as UserExtended,
     success: false,
     error: {
       message: '',
