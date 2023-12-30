@@ -56,6 +56,10 @@ export const Login = () => {
     const errors = validateFields(inputs);
     if (errors == false) {
       dispatch(loginAccount(inputs));
+      setInputs({
+        email: '',
+        password: '',
+      });
     } else {
       setErrors(errors);
     }
@@ -143,7 +147,7 @@ export const Login = () => {
             </button>
           </div>
         </div>
-        <p className="mt-10 text-center text-sm text-gray-500">
+        <p className="mt-5 text-center text-sm text-gray-500">
           Not a member?{' '}
           <Link
             to={'/register'}
