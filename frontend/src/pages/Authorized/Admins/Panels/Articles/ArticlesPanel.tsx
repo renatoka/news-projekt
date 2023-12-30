@@ -2,11 +2,18 @@ import { useEffect, useState } from 'react';
 import { Article } from '../../../../../../../src/handlers/articles/entities/article.entity';
 import { useAppSelector, useAppDispatch } from '../../../../../redux/hooks';
 import { getArticlesAdmin } from '../../../../../redux/actions/articles.actions';
-import { DataGrid } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridToolbarFilterButton,
+  GridToolbarQuickFilter,
+} from '@mui/x-data-grid';
 import { columns } from './helpers/DataGridCustom';
 import { reviewArticle } from '../../../../../redux/actions/articles.actions';
 import { Button, ButtonGroup, CircularProgress } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
+import CreateIcon from '@mui/icons-material/Create';
 
 export const ArticlesPanel = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +29,7 @@ export const ArticlesPanel = () => {
     approval_state: 'all',
   });
   const { articles, loading } = useAppSelector((state) => state.articlesAdmin);
+  const { user } = useAppSelector((state) => state.loggedUser);
 
   useEffect(() => {
     if (firstLoad) {
@@ -111,8 +119,34 @@ export const ArticlesPanel = () => {
           </Button>
         );
       default:
-        return <div></div>;
+        break;
     }
+  };
+
+  const GridToolbar = () => {
+    return (
+      <GridToolbarContainer className="flex justify-between mx-2">
+        <div className="flex items-center">
+          <GridToolbarFilterButton />
+          <GridToolbarExport />
+          {user.role_name === 'editor' && (
+            <div className="px-[5px] py-[4px] hover:bg-[#1975d20a] rounded-[4px] cursor-pointer">
+              <CreateIcon
+                fontSize="small"
+                className="text-[#1976d2] text-[0.8125rem] mr-[6px]"
+              />
+              <Link
+                to="/articles/create"
+                className="text-[#1976d2] text-[0.8125rem]"
+              >
+                CREATE
+              </Link>
+            </div>
+          )}
+        </div>
+        <GridToolbarQuickFilter />
+      </GridToolbarContainer>
+    );
   };
 
   return loading ? (
@@ -155,6 +189,9 @@ export const ArticlesPanel = () => {
         }}
         checkboxSelection
         disableRowSelectionOnClick
+        slots={{
+          toolbar: GridToolbar,
+        }}
       />
     </div>
   );
