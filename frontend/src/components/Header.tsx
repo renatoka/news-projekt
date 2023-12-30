@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import {
   Avatar,
@@ -10,6 +10,7 @@ import {
 import { logoutAccount } from '../redux/actions/auth.actions';
 export const Header = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const news_categories = [
     {
       id: 1,
@@ -57,6 +58,12 @@ export const Header = () => {
 
   const { user } = useAppSelector((state) => state.loggedUser);
 
+  const handleLogout = async () => {
+    await dispatch(logoutAccount()).then(() => {
+      navigate('/login');
+    });
+  };
+
   return (
     <div className="container mx-auto pb-5">
       <div className="flex flex-col w-full justify-between items-center overflow-y-scroll">
@@ -80,18 +87,17 @@ export const Header = () => {
             </div>
           ))}
           {user.id ? (
-            <Dropdown className="mt-3" size="sm">
+            <Dropdown className="mt-3" placement="bottom-end" size="sm">
               <DropdownTrigger>
                 <Avatar
                   src={user.avatar_image}
                   size="sm"
-                  className="cursor-pointer flex-shrink-0"
+                  className="cursor-pointer flex-shrink-0 mt-2 mr-2"
+                  isBordered
                 />
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => dispatch(logoutAccount())}>
-                  Logout
-                </DropdownItem>
+                <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           ) : (

@@ -26,8 +26,25 @@ export const RoleLayout = ({
 
   useEffect(() => {
     if (user.role_name) {
-      if (!authorizedRoles.includes(user.role_name)) {
-        navigate('/articles');
+      switch (user.role_name) {
+        case 'user':
+          if (!authorizedRoles.includes('user')) {
+            navigate('/');
+          }
+          break;
+        case 'editor':
+          if (!authorizedRoles.includes('editor')) {
+            navigate('/articles');
+          }
+          break;
+        case 'admin':
+          if (!authorizedRoles.includes('admin')) {
+            navigate('/articles');
+          }
+          break;
+        default:
+          navigate('/');
+          break;
       }
     }
   }, [user]);

@@ -56,7 +56,7 @@ export const SingleArticle = () => {
                   <p className="text-lg">
                     {author.user.first_name} {author.user.last_name}
                   </p>
-                  <Avatar src={author.user.first_name} size="md" />
+                  <Avatar src={author.user.image} size="md" />
                 </div>
               ))}
             </Skeleton>
