@@ -184,15 +184,15 @@ export const UserProfile = () => {
                   </Button>
                 </div>
               </div>
-              {user.role?.name != 'Admin' && (
+              {user.role?.name != 'admin' && (
                 <div className="flex flex-col w-full md:w-1/2 gap-5">
                   <h1 className="text-3xl font-bold">
-                    {user.role?.name == 'Editor'
+                    {user.role?.name == 'editor'
                       ? 'Published articles'
                       : 'Posted comments'}
                   </h1>
                   <div className="flex flex-col gap-2 h-[500px] overflow-y-scroll">
-                    {user.role?.name == 'User' &&
+                    {user.role?.name == 'user' &&
                       inputs?.comments?.map((comment, index) => (
                         <div className="flex flex-col gap-2" key={index}>
                           <div className="flex flex-col gap-2">
@@ -207,7 +207,7 @@ export const UserProfile = () => {
                           </div>
                         </div>
                       ))}
-                    {user.role?.name == 'Editor' &&
+                    {user.role?.name == 'edtior' &&
                       user.user_authors?.map((user_author, index) => (
                         <div className="flex flex-col gap-2" key={index}>
                           <div className="flex flex-col gap-2">
