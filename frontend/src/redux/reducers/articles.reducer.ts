@@ -57,7 +57,7 @@ const getAllArticlesAdmin = createSlice({
 const getOneArticle = createSlice({
   name: 'article',
   initialState: {
-    article: {},
+    article: {} as Article,
     loading: false,
     error: null,
   },

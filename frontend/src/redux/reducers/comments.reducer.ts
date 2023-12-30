@@ -30,4 +30,36 @@ const getAllComments = createSlice({
   },
 });
 
-export { getAllComments };
+const createComment = createSlice({
+  name: 'createComment',
+  initialState: {
+    comment: {},
+    loading: false,
+    error: null,
+    success: false,
+  },
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase('CREATE_COMMENT_REQUEST', (state) => {
+      state.loading = true;
+    }),
+      builder.addCase('CREATE_COMMENT_SUCCESS', (state, action) => {
+        state.loading = false;
+        state.comment = action.payload;
+        state.success = true;
+      }),
+      builder.addCase('CREATE_COMMENT_FAILURE', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+      }),
+      builder.addCase('CREATE_COMMENT_RESET', (state) => {
+        state.comment = {};
+        state.loading = false;
+        state.error = null;
+        state.success = false;
+      });
+  },
+});
+
+export { getAllComments, createComment };

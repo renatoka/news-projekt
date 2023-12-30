@@ -3,8 +3,12 @@ import {
   GET_ALL_COMMENTS_SUCCESS,
   GET_ALL_COMMENTS_FAIL,
   GET_ALL_COMMENTS_REQUEST,
+  CREATE_COMMENT_FAILURE,
+  CREATE_COMMENT_REQUEST,
+  CREATE_COMMENT_SUCCESS,
 } from '../constants/comments.constants';
 import { Dispatch } from '@reduxjs/toolkit';
+import { api } from '../api.service';
 
 export const getComments = (query: any) => async (dispatch: Dispatch) => {
   try {
@@ -24,3 +28,16 @@ export const getComments = (query: any) => async (dispatch: Dispatch) => {
     dispatch({ type: GET_ALL_COMMENTS_FAIL, payload: error });
   }
 };
+
+export const createComment =
+  (data: { content: string; user_id: string }) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: CREATE_COMMENT_REQUEST });
+      const res = await api.post('/api/comments', data);
+      const payload = await res.data;
+      dispatch({ type: CREATE_COMMENT_SUCCESS, payload });
+    } catch (error) {
+      dispatch({ type: CREATE_COMMENT_FAILURE, payload: error });
+    }
+  };

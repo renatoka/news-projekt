@@ -11,7 +11,7 @@ import {
   getOneUser,
   updateOneUser,
 } from './reducers/users.reducer';
-import { getAllComments } from './reducers/comments.reducer';
+import { createComment, getAllComments } from './reducers/comments.reducer';
 import {
   loggedUser,
   loginAccount,
@@ -29,6 +29,7 @@ export const store = configureStore({
     user: getOneUser.reducer,
     updateOneUser: updateOneUser.reducer,
     comments: getAllComments.reducer,
+    createComment: createComment.reducer,
     register: registerUser.reducer,
     login: loginAccount.reducer,
     loggedUser: loggedUser.reducer,
